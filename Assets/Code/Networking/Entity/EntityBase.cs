@@ -45,7 +45,7 @@ public abstract class EntityBase : MonoBehaviour {
 		  if (NetworkManager.net == null) return true;
 
         // If we're the master and have the appropriate interface, ingore the Authority ID and use the master status
-        if (this is IMasterOwnsUnclaimed) {
+        if (this is IMasterOwnsUnclaimed && isUnclaimed) {
           return NetworkManager.isMaster;
         }
 

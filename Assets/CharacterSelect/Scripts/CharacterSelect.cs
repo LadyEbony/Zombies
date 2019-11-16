@@ -99,7 +99,7 @@ public class CharacterSelect : MonoBehaviour {
   }
 
   public void LoadGame(){
-    SceneManager.LoadScene("BoardStagingOnline");
+    SceneManager.LoadScene("GunStagging");
   }
 
   private void OnEnable() {

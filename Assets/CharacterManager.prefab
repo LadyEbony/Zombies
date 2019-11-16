@@ -49,18 +49,8 @@ MonoBehaviour:
     FullSprite: {fileID: 21300000, guid: 62ce962ed7ab116449b7d075804168ab, type: 3}
     OutlineColor: {r: 1, g: 0, b: 0.08857536, a: 1}
     InnerColor: {r: 1, g: 0.59751934, b: 0, a: 1}
-  - Name: Maid
-    HeadSprite: {fileID: 21300000, guid: ea6f8778bfcf17042a7e358cd185639e, type: 3}
-    FullSprite: {fileID: 21300000, guid: 62ce962ed7ab116449b7d075804168ab, type: 3}
-    OutlineColor: {r: 1, g: 0, b: 0.08857536, a: 1}
-    InnerColor: {r: 1, g: 0.59751934, b: 0, a: 1}
-  - Name: Maid
-    HeadSprite: {fileID: 21300000, guid: ea6f8778bfcf17042a7e358cd185639e, type: 3}
-    FullSprite: {fileID: 21300000, guid: 62ce962ed7ab116449b7d075804168ab, type: 3}
-    OutlineColor: {r: 1, g: 0, b: 0.08857536, a: 1}
-    InnerColor: {r: 1, g: 0.59751934, b: 0, a: 1}
-  - Name: Maid
-    HeadSprite: {fileID: 21300000, guid: ea6f8778bfcf17042a7e358cd185639e, type: 3}
-    FullSprite: {fileID: 21300000, guid: 62ce962ed7ab116449b7d075804168ab, type: 3}
-    OutlineColor: {r: 1, g: 0, b: 0.08857536, a: 1}
-    InnerColor: {r: 1, g: 0.59751934, b: 0, a: 1}
+  - Name: Chad
+    HeadSprite: {fileID: 21300000, guid: 4704998ae01ee894f9096e74b0599c47, type: 3}
+    FullSprite: {fileID: 21300000, guid: 28f0cb5218133e943a1036923ab26562, type: 3}
+    OutlineColor: {r: 1, g: 0.44054055, b: 0, a: 1}
+    InnerColor: {r: 0.9669211, g: 1, b: 0, a: 1}
