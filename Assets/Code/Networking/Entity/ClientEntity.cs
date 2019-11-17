@@ -14,9 +14,10 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public static class ClientEntity  {
 
-  public static readonly string playerStatus = "st";
   public static readonly string characterSelected = "cs";
   public static readonly string readyStatus = "rs";
+
+  public static readonly string sceneStatus = "ss";
 
   public static bool ForceInitlazation;
 
@@ -29,16 +30,11 @@ public static class ClientEntity  {
   public static void CreatePlayerHashtable(){
     var h = new Hashtable();
 
-    var gs = IsGameScene();
-    h.Add(playerStatus, gs);
     h.Add(characterSelected, -1);
     h.Add(readyStatus, false);
+    h.Add(sceneStatus, false);
 
     localPlayer.SetCustomProperties(h);
-
-    if (NetworkManager.isMaster && NetworkManager.inRoom){
-      SetRoomState(gs ? "game" : "lobby");
-    }
   }
 
   public static void SetRoomState(string state){
@@ -75,10 +71,14 @@ public static class ClientEntity  {
     return true;
   }
 
-  static bool IsGameScene(){
-    return SceneManager.GetActiveScene().name != "MainMenu";
+  public static void SetSceneStatus(bool status){
+    var k = new Hashtable();
+    k.Add(sceneStatus, status);
+    localPlayer.SetCustomProperties(k);
   }
 
-  
+  public static bool GetSceneStatus(Player p){
+    return (bool)p.CustomProperties[sceneStatus];
+  }  
 
 }

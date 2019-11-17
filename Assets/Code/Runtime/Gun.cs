@@ -27,10 +27,13 @@ public class Gun : EntityBase {
   public AudioClip[] audios;
 
   [Header("Transforms")]
+  private PlayerController pc;
   public GameObject bulletPrefab;
   public Transform muzzleTransform;
 
   private void Start() {
+    pc = GetComponentInParent<PlayerController>();
+
     this.Register();
   }
 
@@ -81,6 +84,7 @@ public class Gun : EntityBase {
     var direction = Vector3.Normalize(destination - source);
 
     var comp = Instantiate(bulletPrefab, source, Quaternion.LookRotation(source, Vector3.up)).GetComponent<Bullet>();
+    comp.pc = pc;
     comp.damage = damage;
     comp.speed = bulletSpeed;
     comp.destination = destination;
@@ -88,7 +92,7 @@ public class Gun : EntityBase {
 
   [NetEvent('a')]
   public void PlayAudio(int audioIndex){
-    AudioSource.PlayClipAtPoint(audios[audioIndex], muzzleTransform.position);
+    //AudioSource.PlayClipAtPoint(audios[audioIndex], muzzleTransform.position);
   }
 
 }

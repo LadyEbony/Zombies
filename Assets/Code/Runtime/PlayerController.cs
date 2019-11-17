@@ -5,55 +5,33 @@ using UnityEngine;
 
 using UnityEngine.AI;
 
-public class PlayerController : EntityBase, EntityNetwork.IMasterOwnsUnclaimed {
+public class PlayerController : EntityController, EntityNetwork.IMasterOwnsUnclaimed {
 
-  private NavMeshAgent nva;
+  public static List<PlayerController> GlobalList;
 
-  public float speed => nva.speed;
-  public Vector3 velocity {
-    get => nva.velocity;
-    set => nva.velocity = value;
+  static PlayerController(){
+    GlobalList = new List<PlayerController>();
   }
-  public float acceleration => nva.acceleration;
-
-  [Header("Additional")]
-  public Gun gunInHand;
-  public Transform handTransform;
-
-  [Header("Network Timers")]
-  public float updateInterval = 0.1f;
-  private float updateTime;
 
   [Header("Networked Variables")]
   public Vector3 position;
   public float rotation;
 
-  private void Start() {
-    nva = GetComponent<NavMeshAgent>();
+  [Header("Additional")]
+  public Gun gunInHand;
+  public Transform handTransform;
+
+  protected override void StartProcedure() {
+    base.StartProcedure();
+    position = transform.position;
     gunInHand = GetComponentInChildren<Gun>();
 
-    position = transform.position;
-
-    if (!NetworkManager.inRoom) authorityID = -1;
-
-    this.Register();
+    GlobalList.Add(this);
   }
 
-
-  // Update is called once per frame
-  void Update(){
-    if (isMine){
-      LocalUpdate();
-    } else {
-      RemoteUpdate();
-      transform.localScale = Vector3.one * 0.75f;
-    }
-
-    var realtime = Time.realtimeSinceStartup;
-    if (isMine && realtime > updateTime){
-      UpdateNow();
-      updateTime = realtime + updateInterval;
-    }
+  protected override void StartNetworkProcedure() {
+    if (!NetworkManager.inRoom) authorityID = -1;
+    base.StartNetworkProcedure();
   }
 
   public override void Serialize(ExitGames.Client.Photon.Hashtable h) {
@@ -67,16 +45,17 @@ public class PlayerController : EntityBase, EntityNetwork.IMasterOwnsUnclaimed {
     base.Deserialize(h);
 
     object val;
-    if (h.TryGetValue('p', out val)){
+    if (h.TryGetValue('p', out val)) {
       position = (Vector3)val;
     }
 
-    if (h.TryGetValue('r', out val)){
+    if (h.TryGetValue('r', out val)) {
       rotation = (float)val;
     }
   }
 
-  void LocalUpdate(){
+
+  protected override void LocalUpdate(){
     nva.ResetPath();
 
     // movement
@@ -103,36 +82,9 @@ public class PlayerController : EntityBase, EntityNetwork.IMasterOwnsUnclaimed {
       gunInHand?.Fire();
   }
 
-  void RemoteUpdate(){
+  protected override void RemoteUpdate(){
     nva.destination = position;
-
     handTransform.rotation = Quaternion.Slerp(handTransform.rotation, Quaternion.Euler(0f, rotation, 0f), 0.5f);
   }
 
-  private Vector3 GetDirectionInput {
-    get {
-      var ct = Camera.main.transform;
-
-      // Get the forward and right for the camera, flatten them on the XZ plane, then renormalize
-      var fwd = ct.forward;
-      var right = ct.right;
-
-      fwd.y = 0;
-      right.y = 0;
-
-      fwd = fwd.normalized;
-      right = right.normalized;
-
-      var hor = Input.GetAxisRaw("Horizontal");
-      var ver = Input.GetAxisRaw("Vertical");
-
-      var delta = hor * right;
-      delta += ver * fwd;
-
-      // Clamp magnitude, so going diagonally isn't faster.
-      if (delta != Vector3.zero) delta = delta.normalized;
-
-      return delta;
-    }
-  }
 }

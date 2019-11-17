@@ -374,7 +374,7 @@ public abstract class EntityBase : MonoBehaviour {
 
 	[ContextMenu("Claim as mine")]
 	public bool ClaimAsMine() {
-		if (!NetworkManager.inGame && NetworkManager.isReady) return false;
+		if (!NetworkManager.inRoom && NetworkManager.isReady) return false;
 
 		authorityID = NetworkManager.localID;
 
