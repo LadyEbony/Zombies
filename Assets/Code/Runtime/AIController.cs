@@ -15,6 +15,8 @@ public class AIController : EntityController, EntityNetwork.IMasterOwnsUnclaimed
   public float aiInterval = 0.25f;
   private float aiTime;
   public float attackRange;
+  public float attackInterval = 1f;
+  private float attackTime;
 
   void OnEnable() {
     ZombieSpawner.total++;
@@ -43,6 +45,15 @@ public class AIController : EntityController, EntityNetwork.IMasterOwnsUnclaimed
   protected override void Update() {
     base.Update();
 
+    var local = PlayerController.Local;
+    if (local && local.isMine && Time.time >= attackTime) {
+      if (Vector3.SqrMagnitude(local.transform.position - transform.position) <= attackRange * attackRange) {
+        local.RaiseEvent('d', true, 1);
+
+        attackTime = Time.time + attackInterval;
+      }
+    }
+
     if (health <= 0){
       gameObject.SetActive(false);
       Destroy(gameObject, 5f);
@@ -58,19 +69,33 @@ public class AIController : EntityController, EntityNetwork.IMasterOwnsUnclaimed
 
       var closest = list.ElementAt(0);
 
-      if (Vector3.SqrMagnitude(closest.transform.position - transform.position) <= attackRange * attackRange){
-        closest.RaiseEvent('d', true, 1);
-      }
-
       destination = closest.transform.position;
-      nva.destination = destination;
+      SetPath();
 
       aiTime = Time.time + aiInterval;
     }
   }
 
   protected override void RemoteUpdate() {
-    nva.destination = destination;
+    SetPath();
+  }
+
+  void SetPath(){
+    NavMeshPath path = new NavMeshPath();
+    var completePath = NavMesh.CalculatePath(transform.position, destination, NavMesh.AllAreas, path);
+    if (completePath && path.status == NavMeshPathStatus.PathComplete) {
+      nva.SetPath(path);
+    }
+  }
+
+  private void OnDrawGizmos() {
+    Gizmos.color = Color.green;
+    if (nva.hasPath) {
+      var path = nva.path.corners;
+      for (var i = 0; i < path.Length - 1; i++){
+        Gizmos.DrawLine(path[i], path[i + 1]);
+      }
+    }
   }
 
 }

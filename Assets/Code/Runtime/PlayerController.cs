@@ -70,6 +70,8 @@ public class PlayerController : EntityController, EntityNetwork.IMasterOwnsUncla
   protected override void Update() {
     base.Update();
 
+    footstepAudioPlayer.Playing = velocity.sqrMagnitude > 0;
+
     healthTransform.localScale = new Vector3((float)health / healthMax, 1f, 1f);
 
     if (health <= 0){
@@ -85,7 +87,6 @@ public class PlayerController : EntityController, EntityNetwork.IMasterOwnsUncla
     // movement
     var steering = GetDirectionInput;
     velocity = Vector3.MoveTowards(velocity, steering * speed, acceleration);
-    footstepAudioPlayer.Playing = velocity.sqrMagnitude > 0;
 
     // mouse direction
     var ray = Camera.main.ScreenPointToRay(Input.mousePosition);

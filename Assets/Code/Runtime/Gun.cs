@@ -26,6 +26,7 @@ public class Gun : EntityBase {
   [Header("Audio")]
   public AudioSource audioSource;
   public AudioClip gunshotSound;
+  public AudioClip reloadSound;
 
   [Header("Transforms")]
   private PlayerController pc;
@@ -50,6 +51,9 @@ public class Gun : EntityBase {
       gunReady = true;
       clipCount = Mathf.Min(clipCountMax, ammo);
       ammo -= clipCount;
+
+      GunDisplay.Instance.UpdateText(this);
+      RaiseEvent('r', true);
     }
   }
 
@@ -80,6 +84,8 @@ public class Gun : EntityBase {
       if (clipCount <= 0){
         gunReady = false;
         gunRealTime = Time.time + reload;
+
+        RaiseEvent('r', true);
       }
 
       GunDisplay.Instance.UpdateText(this);
@@ -99,6 +105,11 @@ public class Gun : EntityBase {
 
     // Play gunshot sound
     audioSource.PlayOneShot(gunshotSound);
+  }
+
+  [NetEvent('r')]
+  public void PlayReload(){
+    audioSource.PlayOneShot(reloadSound);
   }
 
 }

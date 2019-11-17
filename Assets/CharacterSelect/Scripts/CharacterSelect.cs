@@ -99,7 +99,7 @@ public class CharacterSelect : MonoBehaviour {
   }
 
   public void LoadGame(){
-    SceneManager.LoadScene("GunStagging");
+    SceneManager.LoadScene("SampleScene");
   }
 
   private void OnEnable() {

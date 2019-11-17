@@ -26,6 +26,12 @@ public class ZombieSpawner : EntityBase, EntityNetwork.IMasterOwnsUnclaimed {
     if (!PlayerSpawner.gameReady || isRemote || total > 40) return;
 
     if (Time.time >= spawnTime){
+
+      foreach(var p in PlayerController.GlobalList){
+        if (Vector3.SqrMagnitude(p.transform.position - transform.position) <= range * range)
+          return;
+      }
+
       var ran = Random.insideUnitSphere * range;
 
       var status = NavMesh.SamplePosition(transform.position + ran, out var hit, range * 2f, NavMesh.AllAreas);

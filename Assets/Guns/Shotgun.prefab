@@ -108,6 +108,7 @@ MonoBehaviour:
   bulletReady: 1
   audioSource: {fileID: 0}
   gunshotSound: {fileID: 8300000, guid: e8d5ff52ea8e3474bb84b52081b439f8, type: 3}
+  reloadSound: {fileID: 8300000, guid: c4501bfa3b7a82349bc98efc033c1b88, type: 3}
   bulletPrefab: {fileID: 9000094658478013967, guid: e619e1d466908c5488a67306a0641c21,
     type: 3}
   muzzleTransform: {fileID: 6374506872779640704}
