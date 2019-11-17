@@ -14,6 +14,16 @@ public class AIController : EntityController, EntityNetwork.IMasterOwnsUnclaimed
   [Header("Additional")]
   public float aiInterval = 0.25f;
   private float aiTime;
+  public float attackRange;
+
+  void OnEnable() {
+    ZombieSpawner.total++;
+  }
+
+  void OnDisable() {
+    ZombieSpawner.total--;
+  }
+
 
   public override void Serialize(ExitGames.Client.Photon.Hashtable h) {
     base.Serialize(h);
@@ -30,11 +40,27 @@ public class AIController : EntityController, EntityNetwork.IMasterOwnsUnclaimed
     }
   }
 
+  protected override void Update() {
+    base.Update();
+
+    if (health <= 0){
+      gameObject.SetActive(false);
+      Destroy(gameObject, 5f);
+    }
+  }
+
   protected override void LocalUpdate() {
     if (Time.time >= aiTime){
       nva.ResetPath();
 
-      var closest = PlayerController.GlobalList.OrderBy(p => Vector3.SqrMagnitude(p.transform.position - transform.position)).ElementAt(0);
+      var list = PlayerController.GlobalList.OrderBy(p => Vector3.SqrMagnitude(p.transform.position - transform.position));
+      if (list.Count() == 0) return;
+
+      var closest = list.ElementAt(0);
+
+      if (Vector3.SqrMagnitude(closest.transform.position - transform.position) <= attackRange * attackRange){
+        closest.RaiseEvent('d', true, 1);
+      }
 
       destination = closest.transform.position;
       nva.destination = destination;
@@ -45,11 +71,6 @@ public class AIController : EntityController, EntityNetwork.IMasterOwnsUnclaimed
 
   protected override void RemoteUpdate() {
     nva.destination = destination;
-  }
-
-  [NetEvent('d')]
-  public void TakeDamage(int damage){
-
   }
 
 }

@@ -18,6 +18,7 @@ public static class ClientEntity  {
   public static readonly string readyStatus = "rs";
 
   public static readonly string sceneStatus = "ss";
+  public static readonly string randomValue = "rv";
 
   public static bool ForceInitlazation;
 
@@ -80,5 +81,15 @@ public static class ClientEntity  {
   public static bool GetSceneStatus(Player p){
     return (bool)p.CustomProperties[sceneStatus];
   }  
+
+  public static void SetRandomValue(){
+    var k = new Hashtable();
+    k.Add(randomValue, Random.Range(0, 128));
+    localPlayer.SetCustomProperties(k);
+  }
+
+  public static int GetRandomValue(Player p){
+    return (int)p.CustomProperties[randomValue];
+  }
 
 }

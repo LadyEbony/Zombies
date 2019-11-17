@@ -36,6 +36,10 @@ public class Gun : EntityBase {
     pc = GetComponentInParent<PlayerController>();
 
     this.Register();
+
+    if (pc.isMine){
+      GunDisplay.Instance.UpdateText(this);
+    }
   }
 
   // Update is called once per frame
@@ -54,7 +58,7 @@ public class Gun : EntityBase {
 
       for(var i = 0; i < bulletCount; i++){
         var direction = (Quaternion.LookRotation(muzzleTransform.forward, Vector3.up) * Quaternion.Euler(0f, Random.Range(-bulletSpread, bulletSpread), 0f)) * Vector3.forward;
-        var hitcheck = Physics.Raycast(source, direction, out var hit);
+        var hitcheck = Physics.Raycast(source, direction, out var hit, 10f, LayerMask.GetMask("Default"));
         Vector3 destination;
         if (hitcheck){
           destination = hit.point;
@@ -76,6 +80,8 @@ public class Gun : EntityBase {
         gunReady = false;
         gunRealTime = Time.time + reload;
       }
+
+      GunDisplay.Instance.UpdateText(this);
     }
   }
 

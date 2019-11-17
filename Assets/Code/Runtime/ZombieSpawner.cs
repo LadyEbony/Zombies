@@ -7,6 +7,7 @@ using UnityEngine.AI;
 public class ZombieSpawner : EntityBase, EntityNetwork.IMasterOwnsUnclaimed {
 
   public static int counter = 1100;
+  public static int total = 0;
 
   public GameObject zombie;
   public Sprite[] sprites;
@@ -22,7 +23,7 @@ public class ZombieSpawner : EntityBase, EntityNetwork.IMasterOwnsUnclaimed {
 
   // Update is called once per frame
   void Update() {
-    if (!PlayerSpawner.gameReady || isRemote) return;
+    if (!PlayerSpawner.gameReady || isRemote || total > 40) return;
 
     if (Time.time >= spawnTime){
       var ran = Random.insideUnitSphere * range;

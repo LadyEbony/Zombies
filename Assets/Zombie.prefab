@@ -139,7 +139,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3.5
+  m_Speed: 3.75
   m_Acceleration: 8
   avoidancePriority: 99
   m_AngularSpeed: 120
@@ -166,9 +166,12 @@ MonoBehaviour:
   EntityID: 1000
   authorityID: -1
   nva: {fileID: 0}
+  health: 100
+  healthMax: 100
   updateInterval: 0.1
   destination: {x: 0, y: 0, z: 0}
-  aiInterval: 0.25
+  aiInterval: 0.125
+  attackRange: 1
 --- !u!136 &1156452922
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -177,7 +180,7 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4158336349729544419}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 0.5
   m_Height: 2
