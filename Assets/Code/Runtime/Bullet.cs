@@ -22,7 +22,6 @@ public class Bullet : MonoBehaviour {
   }
 
   private void OnTriggerEnter(Collider col) {
-    Debug.Log(pc);
     if (pc.isMine) {
       var ai = col.transform.gameObject.GetComponent<AIController>();
       ai.RaiseEvent('d', true, damage);

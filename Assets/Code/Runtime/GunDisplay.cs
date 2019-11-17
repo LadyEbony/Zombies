@@ -15,6 +15,6 @@ public class GunDisplay : MonoBehaviour {
   }
 
   public void UpdateText(Gun gun){
-    textMesh.text = string.Format("{0}/{1}   [{2}]", gun.clipCount, gun.clipCountMax, gun.ammo);
+    textMesh.text = string.Format("{3}\n{0}/{1}   [{2}]", gun.clipCount, gun.clipCountMax, gun.ammo, gun.name);
   }
 }

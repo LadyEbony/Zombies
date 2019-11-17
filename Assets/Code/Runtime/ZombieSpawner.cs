@@ -45,8 +45,6 @@ public class ZombieSpawner : EntityBase, EntityNetwork.IMasterOwnsUnclaimed {
 
     obj.GetComponent<AIController>().EntityID = id;
     obj.GetComponentInChildren<SpriteRenderer>().sprite = sprites[id % sprites.Length];
-
-    total += 1;
   }
 
 

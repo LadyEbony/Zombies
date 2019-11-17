@@ -30,6 +30,7 @@ public class ButtonCS : MonoBehaviour {
   public void SelectCharacter(int i){
     ClientEntity.SetCharacter(i);
     ClientEntity.SetReadyStatus(true);
+    ClientEntity.SetRandomValue();
   }
 
 }

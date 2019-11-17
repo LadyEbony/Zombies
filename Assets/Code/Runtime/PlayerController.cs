@@ -7,6 +7,7 @@ using UnityEngine.AI;
 
 public class PlayerController : EntityController, EntityNetwork.IMasterOwnsUnclaimed {
 
+  public static PlayerController Local;
   public static List<PlayerController> GlobalList;
 
   static PlayerController(){
@@ -22,17 +23,25 @@ public class PlayerController : EntityController, EntityNetwork.IMasterOwnsUncla
   public Transform handTransform;
   public Transform healthTransform;
 
+  void OnEnable(){
+    GlobalList.Add(this);
+  }
+
+  void OnDisable(){
+    GlobalList.Remove(this);
+  }
+
   protected override void StartProcedure() {
     base.StartProcedure();
     position = transform.position;
-    gunInHand = GetComponentInChildren<Gun>();
 
-    GlobalList.Add(this);
+    gunInHand = GetComponentInChildren<Gun>();
   }
 
   protected override void StartNetworkProcedure() {
     if (!NetworkManager.inRoom) authorityID = -1;
     base.StartNetworkProcedure();
+    if (isMine) Local = this;
   }
 
   public override void Serialize(ExitGames.Client.Photon.Hashtable h) {
@@ -59,6 +68,11 @@ public class PlayerController : EntityController, EntityNetwork.IMasterOwnsUncla
     base.Update();
 
     healthTransform.localScale = new Vector3((float)health / healthMax, 1f, 1f);
+
+    if (health <= 0){
+      gameObject.SetActive(false);
+      Destroy(gameObject, 5f);
+    }
   }
 
 

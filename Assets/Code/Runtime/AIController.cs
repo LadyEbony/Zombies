@@ -16,6 +16,15 @@ public class AIController : EntityController, EntityNetwork.IMasterOwnsUnclaimed
   private float aiTime;
   public float attackRange;
 
+  void OnEnable() {
+    ZombieSpawner.total++;
+  }
+
+  void OnDisable() {
+    ZombieSpawner.total--;
+  }
+
+
   public override void Serialize(ExitGames.Client.Photon.Hashtable h) {
     base.Serialize(h);
 
@@ -35,7 +44,6 @@ public class AIController : EntityController, EntityNetwork.IMasterOwnsUnclaimed
     base.Update();
 
     if (health <= 0){
-      ZombieSpawner.total -= 1;
       gameObject.SetActive(false);
       Destroy(gameObject, 5f);
     }
@@ -45,7 +53,10 @@ public class AIController : EntityController, EntityNetwork.IMasterOwnsUnclaimed
     if (Time.time >= aiTime){
       nva.ResetPath();
 
-      var closest = PlayerController.GlobalList.OrderBy(p => Vector3.SqrMagnitude(p.transform.position - transform.position)).ElementAt(0);
+      var list = PlayerController.GlobalList.OrderBy(p => Vector3.SqrMagnitude(p.transform.position - transform.position));
+      if (list.Count() == 0) return;
+
+      var closest = list.ElementAt(0);
 
       if (Vector3.SqrMagnitude(closest.transform.position - transform.position) <= attackRange * attackRange){
         closest.RaiseEvent('d', true, 1);
