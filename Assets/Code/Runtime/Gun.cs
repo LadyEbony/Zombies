@@ -34,6 +34,7 @@ public class Gun : EntityBase {
 
   private void Start() {
     pc = GetComponentInParent<PlayerController>();
+    audioSource = GetComponent<AudioSource>();
 
     this.Register();
 
