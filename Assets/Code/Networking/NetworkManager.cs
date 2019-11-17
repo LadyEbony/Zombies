@@ -139,52 +139,24 @@ public class NetworkManager : MonoBehaviour {
       }
    }
 
-    /// <summary>
-    /// Boolean to check if we're in a lobby or not.
-    /// </summary>
-    /// <value><c>true</c> if in lobby; otherwise, <c>false</c>.</value>
-    public static bool inLobby{
-        get {
-            if (!inRoom) return false;
+  /// <summary>
+  /// Boolean to check if all players are ready in a game scene or not.
+  /// </summary>
+  /// <value><c>true</c> if in game; otherwise, <c>false</c>.</value>
+  public static bool inGamePlayersReady {
+    get {
+      if (!inRoom) return true;
 
-            return (string)net.CurrentRoom.CustomProperties[PhotonConstants.propScene] == "lobby";
+      var room = net.CurrentRoom;
+      foreach(var playerPair in room.Players) {
+        var player = playerPair.Value;
+        if (!ClientEntity.GetSceneStatus(player)){
+          return false;
         }
       }
-
-	/// <summary>
-	/// Boolean to check if we're in a game or not.
-	/// </summary>
-	/// <value><c>true</c> if in game; otherwise, <c>false</c>.</value>
-	public static bool inGame {
-		get {
-          if (!inRoom) return false;
-          Debug.Log((string)net.CurrentRoom.CustomProperties[PhotonConstants.propScene]);
-          return (string)net.CurrentRoom.CustomProperties[PhotonConstants.propScene] != "lobby";
-      }
-	}
-
-    /// <summary>
-    /// Boolean to check if all players are ready in a game scene or not.
-    /// </summary>
-    /// <value><c>true</c> if in game; otherwise, <c>false</c>.</value>
-    public static bool inGamePlayersReady {
-      get {
-          if (!inGame) return false;
-
-          var pReady = 0;
-          var lp = -1;
-          var room = net.CurrentRoom;
-          foreach(var playerPair in room.Players) {
-            var player = playerPair.Value;
-            object value;
-            if (player.CustomProperties.TryGetValue(ClientEntity.playerStatus, out value)){
-                if ((bool)value) pReady++;
-                if (player.IsLocal) lp = (bool)value ? 2 : 1;
-            }
-          }
-          return pReady == room.MaxPlayers;
-      }
-   }
+      return true;
+    }
+  }
 
 	/// <summary>
 	/// Enqueue a network update to be sent. Network events are processed both on Update and LateUpdate timings.
