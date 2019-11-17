@@ -17,6 +17,9 @@ public class PlayerController : EntityController, EntityNetwork.IMasterOwnsUncla
   public Vector3 position;
   public float rotation;
 
+  [Header("Audio")]
+  public AudioTimer footstepAudioPlayer;
+
   [Header("Additional")]
   public Gun gunInHand;
   public Transform handTransform;
@@ -61,6 +64,7 @@ public class PlayerController : EntityController, EntityNetwork.IMasterOwnsUncla
     // movement
     var steering = GetDirectionInput;
     velocity = Vector3.MoveTowards(velocity, steering * speed, acceleration);
+    footstepAudioPlayer.Playing = velocity.sqrMagnitude > 0;
 
     // mouse direction
     var ray = Camera.main.ScreenPointToRay(Input.mousePosition);

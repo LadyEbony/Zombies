@@ -23,8 +23,9 @@ public class Gun : EntityBase {
   private float bulletRealTime;
   private float gunRealTime;
 
-  [Header("Audio Clips")]
-  public AudioClip[] audios;
+  [Header("Audio")]
+  public AudioSource audioSource;
+  public AudioClip gunshotSound;
 
   [Header("Transforms")]
   private PlayerController pc;
@@ -65,7 +66,7 @@ public class Gun : EntityBase {
         //FireBullet(destination);
       }
 
-      RaiseEvent('a', true, 0);
+      //RaiseEvent('a', true, 0);
 
       bulletReady = false;
       bulletRealTime = Time.time + bulletInterval;
@@ -88,11 +89,9 @@ public class Gun : EntityBase {
     comp.damage = damage;
     comp.speed = bulletSpeed;
     comp.destination = destination;
-  }
 
-  [NetEvent('a')]
-  public void PlayAudio(int audioIndex){
-    //AudioSource.PlayClipAtPoint(audios[audioIndex], muzzleTransform.position);
+    // Play gunshot sound
+    audioSource.PlayOneShot(gunshotSound);
   }
 
 }
