@@ -21,13 +21,14 @@ public class Bullet : MonoBehaviour {
     }
   }
 
-  private void OnCollisionEnter(Collision collision) {
+  private void OnTriggerEnter(Collider col) {
+    Debug.Log(pc);
     if (pc.isMine) {
-      var ai = collision.gameObject.GetComponent<AIController>();
-      ai.health -= damage;
+      var ai = col.transform.gameObject.GetComponent<AIController>();
+      ai.RaiseEvent('d', true, damage);
     }
 
-    CreateDeathGraphic(collision.GetContact(0).point);
+    CreateDeathGraphic(transform.position);
   }
 
   void CreateDeathGraphic(Vector3 position){

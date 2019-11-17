@@ -17,7 +17,8 @@ public class EntityController : EntityBase {
   public float acceleration => nva.acceleration;
 
   [Header("Gameplay")]
-  public int health;
+  public int health = 100;
+  public int healthMax = 100;
 
   [Header("Network Timers")]
   public float updateInterval = 0.1f;
@@ -75,6 +76,11 @@ public class EntityController : EntityBase {
 
   protected virtual void RemoteUpdate() {
     
+  }
+
+  [NetEvent('d')]
+  public void TakeDamage(int damage) {
+    health = Mathf.Clamp(health - damage, 0, healthMax);
   }
 
   protected Vector3 GetDirectionInput {

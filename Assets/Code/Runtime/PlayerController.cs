@@ -20,6 +20,7 @@ public class PlayerController : EntityController, EntityNetwork.IMasterOwnsUncla
   [Header("Additional")]
   public Gun gunInHand;
   public Transform handTransform;
+  public Transform healthTransform;
 
   protected override void StartProcedure() {
     base.StartProcedure();
@@ -52,6 +53,12 @@ public class PlayerController : EntityController, EntityNetwork.IMasterOwnsUncla
     if (h.TryGetValue('r', out val)) {
       rotation = (float)val;
     }
+  }
+
+  protected override void Update() {
+    base.Update();
+
+    healthTransform.localScale = new Vector3((float)health / healthMax, 1f, 1f);
   }
 
 
