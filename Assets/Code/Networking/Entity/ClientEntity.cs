@@ -12,13 +12,45 @@ using ExitGames.Client.Photon.LoadBalancing;
 using Player = ExitGames.Client.Photon.LoadBalancing.Player;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 
+public class ClientEntityEntry<T> {
+  private string id;
+
+  public ClientEntityEntry(string id){
+    this.id = id;
+  }
+
+  public T GetLocal(){
+    return Get(NetworkManager.net.LocalPlayer);
+  }
+
+  public T Get(Player p){
+    return (T)p.CustomProperties[id];
+  }
+
+  public void SetLocal(T value){
+    Set(NetworkManager.net.LocalPlayer, value);
+  }
+
+  public void Set(Player p, T value){
+    var h = new Hashtable();
+    h.Add(id, value);
+    p.SetCustomProperties(h);
+  }
+
+  public void Initialilze(Hashtable h, T value){
+    h.Add(id, value);
+  }
+
+}
+
 public static class ClientEntity  {
+  public static ClientEntityEntry<int> characterHovered = new ClientEntityEntry<int>("ch");
+  public static ClientEntityEntry<int> characterSelected = new ClientEntityEntry<int>("cs");
 
-  public static readonly string characterSelected = "cs";
-  public static readonly string readyStatus = "rs";
+  public static ClientEntityEntry<bool> lobbyStatus = new ClientEntityEntry<bool>("ls");
+  public static ClientEntityEntry<bool> gameStatus = new ClientEntityEntry<bool>("gs");
 
-  public static readonly string sceneStatus = "ss";
-  public static readonly string randomValue = "rv";
+  public static ClientEntityEntry<int> randomValue = new ClientEntityEntry<int>("rv");
 
   public static bool ForceInitlazation;
 
@@ -31,65 +63,29 @@ public static class ClientEntity  {
   public static void CreatePlayerHashtable(){
     var h = new Hashtable();
 
-    h.Add(characterSelected, -1);
-    h.Add(readyStatus, false);
-    h.Add(sceneStatus, false);
+    characterHovered.Initialilze(h, -1);
+    characterSelected.Initialilze(h, -1);
+
+    lobbyStatus.Initialilze(h, false);
+    gameStatus.Initialilze(h, false);
 
     localPlayer.SetCustomProperties(h);
   }
 
-  public static void SetRoomState(string state){
-    var k = new Hashtable();
-    k.Add(PhotonConstants.propScene, state);
-    NetworkManager.net.OpSetPropertiesOfRoom(k);
-  }
-
-  public static void SetCharacter(int i){
-    var k = new Hashtable();
-    k.Add(characterSelected, i);
-    localPlayer.SetCustomProperties(k);
-  }
-
-  public static int GetCharacter(Player p){
-    return (int)p.CustomProperties[characterSelected];
-  }
-
-  public static void SetReadyStatus(bool status){
-    var k = new Hashtable();
-    k.Add(readyStatus, status);
-    localPlayer.SetCustomProperties(k);
-  }
-
-  public static bool GetReadyStatus(Player p){
-    return (bool)p.CustomProperties[readyStatus];
-  }
-
-  public static bool GetRoomReadyStatus(){
+  public static bool GetAllLobbyStatus(){
     var players = NetworkManager.net.CurrentRoom.Players.Values;
     foreach(var p in players){
-      if (!GetReadyStatus(p)) return false;
+      if (!lobbyStatus.Get(p)) return false;
     }
     return true;
   }
 
-  public static void SetSceneStatus(bool status){
-    var k = new Hashtable();
-    k.Add(sceneStatus, status);
-    localPlayer.SetCustomProperties(k);
-  }
-
-  public static bool GetSceneStatus(Player p){
-    return (bool)p.CustomProperties[sceneStatus];
-  }  
-
-  public static void SetRandomValue(){
-    var k = new Hashtable();
-    k.Add(randomValue, Random.Range(0, 128));
-    localPlayer.SetCustomProperties(k);
-  }
-
-  public static int GetRandomValue(Player p){
-    return (int)p.CustomProperties[randomValue];
+  public static bool GetAllGameStatus() {
+    var players = NetworkManager.net.CurrentRoom.Players.Values;
+    foreach (var p in players) {
+      if (!gameStatus.Get(p)) return false;
+    }
+    return true;
   }
 
 }

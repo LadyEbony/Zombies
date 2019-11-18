@@ -10,7 +10,8 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 public class CharacterSelect : MonoBehaviour {
 
   public GameObject playerPrefab;
-  public Transform playerTranform;
+  public Transform playerTranformLeft, playerTransformRight;
+
   public Dictionary<int, CharacterSelectPortrait> playerDictionary;
 
   public static CharacterSelect Instance { get; private set; }
@@ -20,67 +21,18 @@ public class CharacterSelect : MonoBehaviour {
   }
 
   private IEnumerator Start() {
-    Transform t;
+    ClientEntity.CreatePlayerHashtable();
 
+    // initialize
+    Transform t;
     t = transform.Find("Players");
-    playerTranform = t;
-    playerDictionary = new Dictionary<int, CharacterSelectPortrait>();
-    playerPrefab = t.GetChild(0).gameObject;
+    playerTranformLeft = t.Find("Clients_Left");
+    playerTransformRight = t.Find("Clients_Right");
+
+    playerPrefab = playerTranformLeft.GetChild(0).gameObject;
     playerPrefab.SetActive(false);
 
-    ClientEntity.CreatePlayerHashtable();
-    bool request;
-
-    while (!NetworkManager.onNameServer || !NetworkManager.isReady) yield return null;
-
-    request = NetworkManager.net.OpGetRegions();
-    if (request) {
-      Debug.Log("Region request sent");
-    } else {
-      Debug.Log("Failed request regions");
-      yield break;
-    }
-
-    while (NetworkManager.net.AvailableRegions == null) yield return null;
-    Debug.Log("Regions list recieved");
-
-    request = NetworkManager.net.ConnectToRegionMaster(NetworkManager.net.AvailableRegions[0]);
-    if (request) {
-      Debug.Log("Connected to region master.");
-    } else {
-      Debug.Log("Couldn't connect to region master.");
-      yield break;
-    }
-
-    while (!NetworkManager.onMasterLobby) yield return null;
-
-    var ro = new RoomOptions();
-    ro.EmptyRoomTtl = 1000;
-    ro.CleanupCacheOnLeave = true;
-    ro.PlayerTtl = 500;
-    ro.PublishUserId = false;
-    ro.MaxPlayers = 20; // TODO: Expose this better
-
-    request = NetworkManager.net.OpJoinOrCreateRoom("gamespawn", ro, ExitGames.Client.Photon.LoadBalancing.TypedLobby.Default);
-    if (request) {
-      Debug.Log("Room created");
-    } else {
-      Debug.Log("Couldn't create/join room");
-      yield break;
-    }
-
-    while (!NetworkManager.inRoom) yield return null;
-
-    // Online
-    // Create portraits based on who's connected
-    if (NetworkManager.inRoom){
-      var players = NetworkManager.getSortedPlayers;
-      foreach (var p in players) {
-        AddPlayer(p.ID);
-      }
-    } else {
-      Debug.LogError("not online wtf");
-    }
+    playerDictionary = new Dictionary<int, CharacterSelectPortrait>();
 
     // Create buttons based on the existing prefab
     t = transform.Find("Buttons");
@@ -96,6 +48,19 @@ public class CharacterSelect : MonoBehaviour {
     }
 
     buttonPrefab.SetActive(false);
+    buttonPrefab.transform.parent = null;
+
+    // wait for mode choice
+    while (ModeSelect.Mode == 0) yield return null;
+
+    // Online
+    // Create portraits based on who's connected
+    if (ModeSelect.Mode == 2){
+      var players = NetworkManager.getSortedPlayers;
+      foreach (var p in players) {
+        AddPlayer(p.ID);
+      }
+    }
   }
 
   public void LoadGame(){
@@ -129,8 +94,8 @@ public class CharacterSelect : MonoBehaviour {
   }
 
   private void AddPlayer(int id){
-    if (!playerDictionary.ContainsKey(id)) {
-      var gobject = Instantiate(playerPrefab, playerTranform);
+    if (!playerDictionary.ContainsKey(id) && id != ClientEntity.localPlayer.ID) {
+      var gobject = Instantiate(playerPrefab, playerTranformLeft.childCount <= playerTransformRight.childCount ? playerTranformLeft : playerTransformRight);
       gobject.SetActive(true);
 
       var comp = gobject.GetComponent<CharacterSelectPortrait>();

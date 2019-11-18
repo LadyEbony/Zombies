@@ -12,56 +12,127 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 public class CharacterSelectPortrait : MonoBehaviour {
 
   [Header("Id")]
+  public bool local;
   public int playerId;
   public bool ready;
 
-  [HideInInspector]
-  public int characterId;
-  [HideInInspector]
-  public Character character;
+  private Image[] outlineImages;
+  private Image[] innerImages;
+  private Image headImage, fullImage;
+  private TextMeshProUGUI textMesh;
 
-  [Header("Images")]
-  public Image[] outlineImages;
-  public Image[] innerImages;
-  public Image portraitImage;
+  private void Awake() {
+    var children = ComponentExt.GetAllChildren(transform);
 
-  [Header("Text")]
-  public TextMeshProUGUI characterTextMesh;
+    var outlines = new List<Image>();
+    var inners = new List<Image>();
+    foreach(var t in children){
+      var name = t.name;
+      if (name.Contains("Outline")){
+        outlines.Add(t.GetComponent<Image>());
+      } else if (name.Contains("Inner")){
+        inners.Add(t.GetComponent<Image>());
+      } else {
+        switch(name){
+          case "Full":
+            fullImage = t.GetComponent<Image>();
+            break;
+          case "Head":
+            headImage = t.GetComponent<Image>();
+            break;
+          case "Text":
+            textMesh = t.GetComponent<TextMeshProUGUI>();
+            break;
+        }
+      }
+    }
+
+    outlineImages = outlines.ToArray();
+    innerImages = inners.ToArray();
+  }
 
   private void Update() {
     Player p;
-    if (NetworkManager.inRoom){
+    if (local){
+      p = ClientEntity.localPlayer;
+    } else {
       p = NetworkManager.net.CurrentRoom.GetPlayer(playerId);
       if (p == null) return;
-    } else {
-      p = ClientEntity.localPlayer;
     }
 
-    ready = ClientEntity.GetReadyStatus(p);
+    //ready = ClientEntity.lobbyStatus.Get(p);
     SetPlayer(p);
   }
 
+  private int lastHovered = -1;
+
   public void SetPlayer(Player player){
     playerId = player.ID;
-    characterId = ClientEntity.GetCharacter(player);
 
-    if (characterId >= 0) {
-      character = CharacterManager.Instance.GetCharacter(characterId);
+    var hovered = ClientEntity.characterHovered.Get(player);
+    var selected = ClientEntity.characterSelected.Get(player);
 
+    // display fully
+    if (selected >= 0) {
+      var character = CharacterManager.Instance.GetCharacter(selected);
       foreach (var o in outlineImages) o.color = character.OutlineColor;
       foreach (var i in innerImages) i.color = character.InnerColor;
-      portraitImage.sprite = character.HeadSprite;
-      portraitImage.color = Color.white;
 
-      characterTextMesh.text = character.Name;
-    } else {
+      if (fullImage) {
+        fullImage.sprite = character.FullSprite;
+        fullImage.color = Color.white;
+      }
+
+      if (headImage) {
+        headImage.sprite = character.HeadSprite;
+        headImage.color = Color.white;
+      }
+
+      if (textMesh) {
+        textMesh.text = character.Name;
+      }
+    }
+    // half transparent
+    else if (hovered >= 0) {
+      var character = CharacterManager.Instance.GetCharacter(hovered);
+      foreach (var o in outlineImages) o.color = character.OutlineColor;
+      foreach (var i in innerImages) i.color = character.InnerColor;
+
+      if (fullImage) {
+        fullImage.sprite = character.FullSprite;
+        fullImage.color = new Color(1f, 1f, 1f, 0.5f);
+      }
+
+      if (headImage) {
+        headImage.sprite = character.HeadSprite;
+        headImage.color = new Color(1f, 1f, 1f, 0.5f);
+      }
+
+      if (textMesh) {
+        textMesh.text = character.Name;
+      }
+    } 
+    // nothing
+    else {
       foreach (var o in outlineImages) o.color = Color.black;
       foreach (var i in innerImages) i.color = Color.white;
-      portraitImage.sprite = null;
-      portraitImage.color = Color.clear;
 
-      characterTextMesh.text = string.Empty;
+      if (fullImage) {
+        fullImage.color = Color.clear;
+      }
+
+      if (headImage) {
+        headImage.color = Color.clear;
+      }
+
+      if (textMesh) {
+        textMesh.text = string.Empty;
+      }
     }
+
+    if (hovered >= 0)
+      lastHovered = hovered;
+
   }
 
 }

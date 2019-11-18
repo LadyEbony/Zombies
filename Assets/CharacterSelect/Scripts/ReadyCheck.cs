@@ -63,7 +63,7 @@ public class ReadyCheck : MonoBehaviour {
     } else {
       elasped = 0f;
       
-      if (ClientEntity.GetReadyStatus(ClientEntity.localPlayer)){
+      if (ClientEntity.lobbyStatus.GetLocal()){
         canvas.enabled = true;
         textMesh.text = "Waiting";
       } else {
@@ -86,14 +86,9 @@ public class ReadyCheck : MonoBehaviour {
     if (NetworkManager.inRoom) {
       var players = NetworkManager.net.CurrentRoom.Players;
       if (players.Count <= 1) return false; // +2
-      foreach (var p in players){
-        var status = ClientEntity.GetReadyStatus(p.Value);
-        if (!status) return false;
-      }
-    } else {
-      return ClientEntity.GetReadyStatus(ClientEntity.localPlayer);
+      return ClientEntity.GetAllLobbyStatus();
     }
-    return true;
+    return ClientEntity.lobbyStatus.GetLocal();
   }
 
 }

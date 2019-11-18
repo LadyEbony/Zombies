@@ -146,15 +146,7 @@ public class NetworkManager : MonoBehaviour {
   public static bool inGamePlayersReady {
     get {
       if (!inRoom) return true;
-
-      var room = net.CurrentRoom;
-      foreach(var playerPair in room.Players) {
-        var player = playerPair.Value;
-        if (!ClientEntity.GetSceneStatus(player)){
-          return false;
-        }
-      }
-      return true;
+      return ClientEntity.GetAllGameStatus();
     }
   }
 

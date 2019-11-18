@@ -22,7 +22,7 @@ public class PlayerSpawner : MonoBehaviour {
     foreach (Transform child in transform)
       spawnPoints.Add(child);
 
-    ClientEntity.SetSceneStatus(true);
+    ClientEntity.gameStatus.SetLocal(true);
 
     while (!NetworkManager.inGamePlayersReady) yield return null;
 
@@ -30,7 +30,7 @@ public class PlayerSpawner : MonoBehaviour {
       var players = NetworkManager.getSortedPlayers;
       foreach (var p in players){
         var pid = p.ID;
-        var r = ClientEntity.GetRandomValue(p);
+        var r = ClientEntity.randomValue.Get(p);
         var index = ((r + 1) * (r)) % spawnPoints.Count;
         var item = spawnPoints[index];
         spawnPoints.RemoveAt(index);
@@ -43,7 +43,7 @@ public class PlayerSpawner : MonoBehaviour {
         pc.authorityID = pid;
 
         var sr = obj.GetComponentInChildren<SpriteRenderer>();
-        var ch = CharacterManager.Instance.GetCharacter(ClientEntity.GetCharacter(p));
+        var ch = CharacterManager.Instance.GetCharacter(ClientEntity.characterSelected.Get(p));
         sr.sprite = ch.FullSprite;
 
         r *= 2;
