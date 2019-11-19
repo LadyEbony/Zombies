@@ -6,6 +6,7 @@ using UnityEngine;
 
 [ExecuteInEditMode]
 public class FaceCamera : MonoBehaviour {
+
   void LateUpdate() {
     var activeCam = Camera.main;
 

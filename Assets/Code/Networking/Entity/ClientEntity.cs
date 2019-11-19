@@ -72,6 +72,23 @@ public static class ClientEntity  {
     localPlayer.SetCustomProperties(h);
   }
 
+  public static void CreateDummyPlayerHashtable(){
+    var c = localPlayer.CustomProperties;
+    if (c == null || c.Count == 0){
+      var h = new Hashtable();
+
+      characterHovered.Initialilze(h, 0);
+      characterSelected.Initialilze(h, 0);
+
+      lobbyStatus.Initialilze(h, true);
+      gameStatus.Initialilze(h, false);
+
+      randomValue.Initialilze(h, 0);
+
+      localPlayer.SetCustomProperties(h);
+    }
+  }
+
   public static bool GetAllLobbyStatus(){
     var players = NetworkManager.net.CurrentRoom.Players.Values;
     foreach(var p in players){

@@ -25,6 +25,8 @@ public class PlayerController : EntityController, EntityNetwork.IMasterOwnsUncla
   public Gun gunInHand;
   public Transform handTransform;
   public Transform healthTransform;
+  public GameObject reloadDisplay;
+  public Transform reloadTransform;
 
   void OnEnable(){
     GlobalList.Add(this);
@@ -42,7 +44,6 @@ public class PlayerController : EntityController, EntityNetwork.IMasterOwnsUncla
   }
 
   protected override void StartNetworkProcedure() {
-    if (!NetworkManager.inRoom) authorityID = -1;
     base.StartNetworkProcedure();
     if (isMine) Local = this;
   }

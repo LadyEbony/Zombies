@@ -172,6 +172,7 @@ MonoBehaviour:
   destination: {x: 0, y: 0, z: 0}
   aiInterval: 0.125
   attackRange: 1
+  attackInterval: 0.5
 --- !u!136 &1156452922
 CapsuleCollider:
   m_ObjectHideFlags: 0

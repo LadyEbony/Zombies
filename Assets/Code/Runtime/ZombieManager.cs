@@ -15,8 +15,10 @@ public class ZombieManager : EntityBase, EntityNetwork.IMasterOwnsUnclaimed {
   public Sprite[] zombieSprites;
   public int zombieCounter = 1100;
 
-  private float startTime = 0f;
-  private float nextSpawnTime;
+  [Header("Timings (Read only)")]
+  public float startTime = 0f;
+  public float nextSpawnTime;
+
   [Header("Difficulty over Time")]
   public int baseHealth = 100;
   public float healthPerSecond = 100f / 180f;
@@ -27,17 +29,20 @@ public class ZombieManager : EntityBase, EntityNetwork.IMasterOwnsUnclaimed {
   public float baseSpawnRatePerSecond = 1f;
   public float increasedSpawnRatePerSecond = 1f / 180f;
 
+  public float GetSecondsTillNextSpawn(float time) => 1f / (baseSpawnRatePerSecond + time * increasedSpawnRatePerSecond);
+
   // Start is called before the first frame update
   private IEnumerator Start() {
     this.Register();
 
     while (!PlayerSpawner.gameReady) yield return null;
     startTime = Time.time;
+    nextSpawnTime = startTime + GetSecondsTillNextSpawn(0f);
   }
 
   // Update is called once per frame
   void Update(){
-    if (PlayerSpawner.gameReady && isMine || ZOMBIE_TOTAL < ZOMBIE_MAX) {
+    if (PlayerSpawner.gameReady && isMine && ZOMBIE_TOTAL < ZOMBIE_MAX && PlayerController.GlobalList.Count > 0) {
       if (Time.time >= nextSpawnTime){
         var time = Time.time - startTime;
 
@@ -70,7 +75,7 @@ public class ZombieManager : EntityBase, EntityNetwork.IMasterOwnsUnclaimed {
 
         RaiseEvent('z', true, zombieCounter++, hit.position, time);
 
-        nextSpawnTime += 1f / (baseSpawnRatePerSecond + time * increasedSpawnRatePerSecond);
+        nextSpawnTime += GetSecondsTillNextSpawn(time);
       }
     }
   }

@@ -47,13 +47,20 @@ public class Gun : EntityBase {
   // Update is called once per frame
   void Update() {
     if (!bulletReady && Time.time >= bulletRealTime) bulletReady = true;
-    if (!gunReady && Time.time >= gunRealTime) { 
-      gunReady = true;
-      clipCount = Mathf.Min(clipCountMax, ammo);
-      ammo -= clipCount;
 
-      GunDisplay.Instance.UpdateText(this);
-      RaiseEvent('r', true);
+    if (!gunReady){
+      if (Time.time >= gunRealTime){
+        gunReady = true;
+        pc.reloadDisplay.SetActive(false);
+
+        clipCount = Mathf.Min(clipCountMax, ammo);
+        ammo -= clipCount;
+
+        GunDisplay.Instance.UpdateText(this);
+        RaiseEvent('r', true);
+      } else {
+        pc.reloadTransform.localScale = new Vector3((Time.time - gunRealTime + reload) / reload, 1f, 1f);
+      }
     }
   }
 
@@ -85,6 +92,9 @@ public class Gun : EntityBase {
         gunReady = false;
         gunRealTime = Time.time + reload;
 
+        pc.reloadDisplay.SetActive(true);
+        pc.reloadTransform.localScale = new Vector3(0f, 1f, 1f);
+
         RaiseEvent('r', true);
       }
 
@@ -97,7 +107,7 @@ public class Gun : EntityBase {
     var source = muzzleTransform.position;
     var direction = Vector3.Normalize(destination - source);
 
-    var comp = Instantiate(bulletPrefab, source, Quaternion.LookRotation(source, Vector3.up)).GetComponent<Bullet>();
+    var comp = Instantiate(bulletPrefab, source, Quaternion.LookRotation(direction, Vector3.up)).GetComponent<Bullet>();
     comp.pc = pc;
     comp.damage = damage;
     comp.speed = bulletSpeed;
