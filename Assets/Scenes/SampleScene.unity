@@ -15560,14 +15560,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d03d7f9b201e8284ebbfbfb810262531, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EntityID: 1006
-  authorityID: -1
-  zombie: {fileID: 4158336349729544419, guid: d3b05bb77cd776941b8065b759b94b61, type: 3}
-  sprites:
-  - {fileID: 21300000, guid: 6ab40b0a352728e45974fc45078323ea, type: 3}
-  - {fileID: 21300000, guid: eb3b7480204cf774b9046888dc3373be, type: 3}
-  - {fileID: 21300000, guid: d2ee1abc64add61409bd1d9f0e1721c2, type: 3}
-  spawnInterval: 5
   range: 5
 --- !u!1 &386950600
 GameObject:
@@ -21279,14 +21271,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d03d7f9b201e8284ebbfbfb810262531, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EntityID: 1000
-  authorityID: -1
-  zombie: {fileID: 4158336349729544419, guid: d3b05bb77cd776941b8065b759b94b61, type: 3}
-  sprites:
-  - {fileID: 21300000, guid: 6ab40b0a352728e45974fc45078323ea, type: 3}
-  - {fileID: 21300000, guid: eb3b7480204cf774b9046888dc3373be, type: 3}
-  - {fileID: 21300000, guid: d2ee1abc64add61409bd1d9f0e1721c2, type: 3}
-  spawnInterval: 5
   range: 5
 --- !u!1 &753013921
 GameObject:
@@ -25390,14 +25374,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d03d7f9b201e8284ebbfbfb810262531, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EntityID: 1004
-  authorityID: -1
-  zombie: {fileID: 4158336349729544419, guid: d3b05bb77cd776941b8065b759b94b61, type: 3}
-  sprites:
-  - {fileID: 21300000, guid: 6ab40b0a352728e45974fc45078323ea, type: 3}
-  - {fileID: 21300000, guid: eb3b7480204cf774b9046888dc3373be, type: 3}
-  - {fileID: 21300000, guid: d2ee1abc64add61409bd1d9f0e1721c2, type: 3}
-  spawnInterval: 5
   range: 5
 --- !u!1 &840550506
 GameObject:
@@ -28809,14 +28785,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d03d7f9b201e8284ebbfbfb810262531, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EntityID: 1003
-  authorityID: -1
-  zombie: {fileID: 4158336349729544419, guid: d3b05bb77cd776941b8065b759b94b61, type: 3}
-  sprites:
-  - {fileID: 21300000, guid: 6ab40b0a352728e45974fc45078323ea, type: 3}
-  - {fileID: 21300000, guid: eb3b7480204cf774b9046888dc3373be, type: 3}
-  - {fileID: 21300000, guid: d2ee1abc64add61409bd1d9f0e1721c2, type: 3}
-  spawnInterval: 5
   range: 5
 --- !u!1 &891443845
 GameObject:
@@ -35372,14 +35340,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d03d7f9b201e8284ebbfbfb810262531, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EntityID: 1002
-  authorityID: -1
-  zombie: {fileID: 4158336349729544419, guid: d3b05bb77cd776941b8065b759b94b61, type: 3}
-  sprites:
-  - {fileID: 21300000, guid: 6ab40b0a352728e45974fc45078323ea, type: 3}
-  - {fileID: 21300000, guid: eb3b7480204cf774b9046888dc3373be, type: 3}
-  - {fileID: 21300000, guid: d2ee1abc64add61409bd1d9f0e1721c2, type: 3}
-  spawnInterval: 5
   range: 5
 --- !u!1 &1222499818
 GameObject:
@@ -39039,14 +38999,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d03d7f9b201e8284ebbfbfb810262531, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EntityID: 1008
-  authorityID: -1
-  zombie: {fileID: 4158336349729544419, guid: d3b05bb77cd776941b8065b759b94b61, type: 3}
-  sprites:
-  - {fileID: 21300000, guid: 6ab40b0a352728e45974fc45078323ea, type: 3}
-  - {fileID: 21300000, guid: eb3b7480204cf774b9046888dc3373be, type: 3}
-  - {fileID: 21300000, guid: d2ee1abc64add61409bd1d9f0e1721c2, type: 3}
-  spawnInterval: 5
   range: 5
 --- !u!1 &1299188910
 GameObject:
@@ -39860,14 +39812,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d03d7f9b201e8284ebbfbfb810262531, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EntityID: 1007
-  authorityID: -1
-  zombie: {fileID: 4158336349729544419, guid: d3b05bb77cd776941b8065b759b94b61, type: 3}
-  sprites:
-  - {fileID: 21300000, guid: 6ab40b0a352728e45974fc45078323ea, type: 3}
-  - {fileID: 21300000, guid: eb3b7480204cf774b9046888dc3373be, type: 3}
-  - {fileID: 21300000, guid: d2ee1abc64add61409bd1d9f0e1721c2, type: 3}
-  spawnInterval: 5
   range: 5
 --- !u!43 &1401508940
 Mesh:
@@ -44150,14 +44094,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d03d7f9b201e8284ebbfbfb810262531, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EntityID: 1005
-  authorityID: -1
-  zombie: {fileID: 4158336349729544419, guid: d3b05bb77cd776941b8065b759b94b61, type: 3}
-  sprites:
-  - {fileID: 21300000, guid: 6ab40b0a352728e45974fc45078323ea, type: 3}
-  - {fileID: 21300000, guid: eb3b7480204cf774b9046888dc3373be, type: 3}
-  - {fileID: 21300000, guid: d2ee1abc64add61409bd1d9f0e1721c2, type: 3}
-  spawnInterval: 5
   range: 5
 --- !u!1 &1546746429
 GameObject:
@@ -52656,14 +52592,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d03d7f9b201e8284ebbfbfb810262531, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EntityID: 1001
-  authorityID: -1
-  zombie: {fileID: 4158336349729544419, guid: d3b05bb77cd776941b8065b759b94b61, type: 3}
-  sprites:
-  - {fileID: 21300000, guid: 6ab40b0a352728e45974fc45078323ea, type: 3}
-  - {fileID: 21300000, guid: eb3b7480204cf774b9046888dc3373be, type: 3}
-  - {fileID: 21300000, guid: d2ee1abc64add61409bd1d9f0e1721c2, type: 3}
-  spawnInterval: 5
   range: 5
 --- !u!1 &1819329696
 GameObject:
@@ -53070,6 +52998,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1872471308}
+  - component: {fileID: 1872471309}
   m_Layer: 0
   m_Name: Zombie Spawner
   m_TagString: Untagged
@@ -53100,6 +53029,33 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1872471309
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1872471307}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30df7714dd59eb741ae8a716a0211a3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  EntityID: 1000
+  authorityID: -1
+  zombiePrefab: {fileID: 4158336349729544419, guid: d3b05bb77cd776941b8065b759b94b61,
+    type: 3}
+  zombieSprites:
+  - {fileID: 21300000, guid: 6ab40b0a352728e45974fc45078323ea, type: 3}
+  - {fileID: 21300000, guid: eb3b7480204cf774b9046888dc3373be, type: 3}
+  - {fileID: 21300000, guid: d2ee1abc64add61409bd1d9f0e1721c2, type: 3}
+  zombieCounter: 1100
+  baseHealth: 100
+  healthPerSecond: 0.5555556
+  baseSpeed: 3.5
+  speedPerSecond: 0.0055555557
+  baseSpawnRatePerSecond: 1
+  increasedSpawnRatePerSecond: 0.0055555557
 --- !u!1 &1880112835
 GameObject:
   m_ObjectHideFlags: 0

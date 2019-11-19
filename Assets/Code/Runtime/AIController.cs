@@ -19,11 +19,11 @@ public class AIController : EntityController, EntityNetwork.IMasterOwnsUnclaimed
   private float attackTime;
 
   void OnEnable() {
-    ZombieSpawner.total++;
+    ZombieManager.ZOMBIE_TOTAL++;
   }
 
   void OnDisable() {
-    ZombieSpawner.total--;
+    ZombieManager.ZOMBIE_TOTAL--;
   }
 
 

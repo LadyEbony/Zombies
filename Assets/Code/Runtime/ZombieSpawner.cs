@@ -4,55 +4,19 @@ using UnityEngine;
 
 using UnityEngine.AI;
 
-public class ZombieSpawner : EntityBase, EntityNetwork.IMasterOwnsUnclaimed {
-
-  public static int counter = 1100;
-  public static int total = 0;
-
-  public GameObject zombie;
-  public Sprite[] sprites;
-  public float spawnInterval;
-  private float spawnTime;
+public class ZombieSpawner : MonoBehaviour {
 
   public float range;
 
-  private IEnumerator Start() {
-    while (!PlayerSpawner.gameReady) yield return null;
-    this.Register();
+  void OnEnable(){
+    ZombieManager.spawners.Add(this);
   }
 
-  // Update is called once per frame
-  void Update() {
-    if (!PlayerSpawner.gameReady || isRemote || total > 40) return;
-
-    if (Time.time >= spawnTime){
-
-      foreach(var p in PlayerController.GlobalList){
-        if (Vector3.SqrMagnitude(p.transform.position - transform.position) <= range * range)
-          return;
-      }
-
-      var ran = Random.insideUnitSphere * range;
-
-      var status = NavMesh.SamplePosition(transform.position + ran, out var hit, range * 2f, NavMesh.AllAreas);
-      if (!status){
-        Debug.Log("Could not find spawn point");
-        return;
-      }
-
-      RaiseEvent('z', true, counter++, hit.position);
-      spawnTime = Time.time + spawnInterval;
-    }
+  void OnDisable(){
+    ZombieManager.spawners.Remove(this);
   }
 
-  [NetEvent('z')]
-  public void SpawnZombie(int id, Vector3 position) {
-    var obj = Instantiate(zombie, position, Quaternion.identity);
-
-    obj.GetComponent<AIController>().EntityID = id;
-    obj.GetComponentInChildren<SpriteRenderer>().sprite = sprites[id % sprites.Length];
-  }
-
+  public bool WithinRange(Vector3 position) => Vector3.SqrMagnitude(position - transform.position) <= range * range;
 
   private void OnDrawGizmos() {
     Gizmos.color = Color.red;
