@@ -3,17 +3,35 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class TimerDisplay : MonoBehaviour
-{
-    public Timer timer;
-    public float time;
-    public TextMeshProUGUI timerText;
+[RequireComponent(typeof(TextMeshProUGUI), typeof(Timer))]
+public class TimerDisplay : MonoBehaviour {
 
-    protected void Start() {
-        timer.startTimer();
+  public static TimerDisplay Instance;
+
+  private Timer timer;
+  private TextMeshProUGUI textMesh;
+
+  private void Awake() {
+    Instance = this;
+
+    timer = GetComponent<Timer>();
+    textMesh = GetComponent<TextMeshProUGUI>();
+  }
+
+  private IEnumerator Start() {
+    while (!PlayerSpawner.gameReady) yield return null;
+    timer.running = true;
+  }
+
+  private void Update() {
+    if (!PlayerSpawner.gameReady) return;
+
+    if (PlayerController.Local == null || !PlayerController.Local.gameObject.activeSelf) {
+      timer.running = false;
+      textMesh.color = Color.red;
+      Destroy(this);
     }
 
-    protected void Update() {
-        timerText.text = timer.timeFromStart();
-    }
+    textMesh.text = timer.ToString();
+  }
 }

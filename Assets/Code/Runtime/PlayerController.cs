@@ -17,6 +17,7 @@ public class PlayerController : EntityController, EntityNetwork.IMasterOwnsUncla
   [Header("Networked Variables")]
   public Vector3 position;
   public float rotation;
+  public int kills;
 
   [Header("Audio")]
   public AudioTimer footstepAudioPlayer;
@@ -45,7 +46,9 @@ public class PlayerController : EntityController, EntityNetwork.IMasterOwnsUncla
 
   protected override void StartNetworkProcedure() {
     base.StartNetworkProcedure();
+
     if (isMine) Local = this;
+    Score.Instance.Add(this);
   }
 
   public override void Serialize(ExitGames.Client.Photon.Hashtable h) {
@@ -53,6 +56,7 @@ public class PlayerController : EntityController, EntityNetwork.IMasterOwnsUncla
 
     h.Add('p', transform.position);
     h.Add('r', rotation);
+    h.Add('k', kills);
   }
 
   public override void Deserialize(ExitGames.Client.Photon.Hashtable h) {
@@ -66,6 +70,10 @@ public class PlayerController : EntityController, EntityNetwork.IMasterOwnsUncla
     if (h.TryGetValue('r', out val)) {
       rotation = (float)val;
     }
+
+    if (h.TryGetValue('k', out val)){
+      kills = (int)val;
+    }
   }
 
   protected override void Update() {
@@ -76,6 +84,8 @@ public class PlayerController : EntityController, EntityNetwork.IMasterOwnsUncla
     healthTransform.localScale = new Vector3((float)health / healthMax, 1f, 1f);
 
     if (health <= 0){
+      Score.Instance.Remove(this);
+
       gameObject.SetActive(false);
       Destroy(gameObject, 5f);
     }

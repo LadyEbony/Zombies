@@ -25,6 +25,10 @@ public class Bullet : MonoBehaviour {
     if (pc.isMine) {
       var ai = col.transform.gameObject.GetComponent<AIController>();
       ai.RaiseEvent('d', true, damage);
+
+      if (ai.health <= 0){
+        pc.kills++;
+      }
     }
 
     CreateDeathGraphic(transform.position);

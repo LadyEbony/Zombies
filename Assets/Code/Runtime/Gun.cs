@@ -40,7 +40,9 @@ public class Gun : EntityBase {
     this.Register();
 
     if (pc.isMine){
-      GunDisplay.Instance.UpdateText(this);
+      GunDisplay.GunInstance.textMesh.text = name;
+      GunDisplay.ClipInstance.textMesh.text = clipCount.ToString();
+      GunDisplay.AmmoInstance.textMesh.text = ammo.ToString();
     }
   }
 
@@ -56,7 +58,8 @@ public class Gun : EntityBase {
         clipCount = Mathf.Min(clipCountMax, ammo);
         ammo -= clipCount;
 
-        GunDisplay.Instance.UpdateText(this);
+        GunDisplay.ClipInstance.textMesh.text = clipCount.ToString();
+        GunDisplay.AmmoInstance.textMesh.text = ammo.ToString();
         RaiseEvent('r', true);
       } else {
         pc.reloadTransform.localScale = new Vector3((Time.time - gunRealTime + reload) / reload, 1f, 1f);
@@ -79,10 +82,7 @@ public class Gun : EntityBase {
         }
 
         RaiseEvent('f', true, destination);
-        //FireBullet(destination);
       }
-
-      //RaiseEvent('a', true, 0);
 
       bulletReady = false;
       bulletRealTime = Time.time + bulletInterval;
@@ -98,7 +98,7 @@ public class Gun : EntityBase {
         RaiseEvent('r', true);
       }
 
-      GunDisplay.Instance.UpdateText(this);
+      GunDisplay.ClipInstance.textMesh.text = clipCount.ToString();
     }
   }
 

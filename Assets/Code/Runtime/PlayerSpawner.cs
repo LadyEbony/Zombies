@@ -42,6 +42,8 @@ public class PlayerSpawner : MonoBehaviour {
   }
 
   void CreatePlayer(Player player){
+    var ch = CharacterManager.Instance.GetCharacter(ClientEntity.characterSelected.Get(player));
+
     var pid = player.ID;
     var r = ClientEntity.randomValue.Get(player);
     var index = ((r + 1) * (r)) % spawnPoints.Count;
@@ -49,6 +51,8 @@ public class PlayerSpawner : MonoBehaviour {
     spawnPoints.RemoveAt(index);
 
     var obj = Instantiate(playerPrefab, item.position, Quaternion.identity);
+    obj.name = ch.Name;
+
     var pc = obj.GetComponent<PlayerController>();
     pc.nva = obj.GetComponent<UnityEngine.AI.NavMeshAgent>();
     pc.nva.avoidancePriority = pid == ClientEntity.localPlayer.ID ? 50 : 0;
@@ -56,7 +60,7 @@ public class PlayerSpawner : MonoBehaviour {
     pc.authorityID = pid;
 
     var sr = obj.GetComponentInChildren<SpriteRenderer>();
-    var ch = CharacterManager.Instance.GetCharacter(ClientEntity.characterSelected.Get(player));
+    
     sr.sprite = ch.FullSprite;
 
     r *= 2;

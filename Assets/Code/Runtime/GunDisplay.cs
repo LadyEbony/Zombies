@@ -5,16 +5,26 @@ using UnityEngine;
 using TMPro;
 
 public class GunDisplay : MonoBehaviour {
-  public static GunDisplay Instance;
 
-  private TextMeshProUGUI textMesh;
+  public static GunDisplay ClipInstance, AmmoInstance, GunInstance;
+
+  public TextMeshProUGUI textMesh;
 
   private void Awake() {
-    Instance = this;
+
+    switch (gameObject.name) {
+      case "Gun":
+        GunInstance = this;
+        break;
+      case "Clip":
+        ClipInstance = this;
+        break;
+      case "Ammo":
+        AmmoInstance = this;
+        break;
+    }
+
     textMesh = GetComponent<TextMeshProUGUI>();
   }
-
-  public void UpdateText(Gun gun){
-    textMesh.text = string.Format("{3}\n{0}/{1}   [{2}]", gun.clipCount, gun.clipCountMax, gun.ammo, gun.name);
-  }
 }
+

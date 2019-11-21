@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraFollow : MonoBehaviour
-{
+public class CameraFollow : MonoBehaviour {
+
   public float lerpAmount = 3f;
   public float distance = 10f;
   private Transform t;
